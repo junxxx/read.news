@@ -14,7 +14,8 @@ const docPath = "./doc/"
 
 func main() {
 	fmt.Println("register job")
-	gocron.Every(1).Day().At("09:00").Do(task)
+	// UTC time
+	gocron.Every(1).Day().At("01:30").Do(task)
 	<-gocron.Start()
 }
 
