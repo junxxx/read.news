@@ -10,6 +10,7 @@ require (
 require (
 	github.com/PuerkitoBio/goquery v1.8.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
+	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible // indirect
 	github.com/jung-kurt/gofpdf v1.16.2 // indirect
 	github.com/phpdave11/gofpdi v1.0.11 // indirect

@@ -111,8 +111,11 @@ func Parse() []string {
 		if sameDate(yesterday(), a.date) {
 			a.addContent()
 
-			filename := a.title + ".txt"
-			err := os.WriteFile("./"+filename, a.contents, 0644)
+			folder := time.Now().Format("2006-02-01")
+			path := "./" + folder
+			os.Mkdir(path, 0755)
+			filename := path + "/" + a.title + ".txt"
+			err := os.WriteFile(filename, a.contents, 0644)
 			if err != nil {
 				log.Println(err)
 			}

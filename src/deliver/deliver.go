@@ -51,4 +51,13 @@ func DeliverDoc(filenames []string) {
 	}
 
 	log.Println("email send successfully!")
+	// delete tmp file
+	afterSend(filenames)
+}
+
+// do something after send email
+func afterSend(filenames []string) {
+	for _, file := range filenames {
+		os.Remove(file)
+	}
 }
