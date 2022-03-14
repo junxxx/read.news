@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/junxxx/read.news/util"
 )
 
 const (
@@ -42,10 +43,6 @@ func sameDate(d1, d2 string) bool {
 
 func yesterday() string {
 	return time.Now().AddDate(0, 0, -1).Format(dateFormt)
-}
-
-func today() string {
-	return time.Now().Format(dateFormt)
 }
 
 func getUrlDoc(url string) (*goquery.Document, error) {
@@ -111,7 +108,7 @@ func Parse() []string {
 		if sameDate(yesterday(), a.date) {
 			a.addContent()
 
-			folder := time.Now().Format("2006-02-01")
+			folder := util.Today()
 			path := "./" + folder
 			os.Mkdir(path, 0755)
 			filename := path + "/" + a.title + ".txt"

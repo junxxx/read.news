@@ -9,6 +9,7 @@ import (
 
 	"github.com/jordan-wright/email"
 	"github.com/junxxx/read.news/env"
+	"github.com/junxxx/read.news/util"
 )
 
 var to = []string{"312866238@qq.com", "jinyanhuohuo@163.com"}
@@ -51,6 +52,8 @@ func DeliverDoc(filenames []string) {
 	}
 
 	log.Println("email send successfully!")
+	// memory limit
+	env.SendLog[util.Today()] = true
 	// delete tmp file
 	afterSend(filenames)
 }

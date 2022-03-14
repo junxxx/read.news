@@ -11,7 +11,9 @@ every day
 - [ ] add lock
 - [x] remove tmp file
 - [ ] timezone
-- [ ] retry when error occured or send email failed
+- [x] retry when error occured or send email failed
 - [ ] error catch
 - [ ] log
 - [ ] build script
+- [ ] dynamic upgrade
+- [ ] dynamic parse date
