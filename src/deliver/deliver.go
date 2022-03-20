@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/jordan-wright/email"
+	"github.com/junxxx/read.news/cache"
 	"github.com/junxxx/read.news/env"
 	"github.com/junxxx/read.news/util"
 )
@@ -32,13 +33,17 @@ func addAttachFile(e *email.Email, filenames []string) {
 }
 
 func DeliverDoc(filenames []string) {
-	subject := "[VOA]Daily Reads\r\n\r\n"
+	text := "Read news, have a nice day"
+	if len(filenames) <= 0 {
+		text = "no news released today"
+	}
+	subject := "[VOA]Daily Readings\r\n\r\n"
 
 	e := &email.Email{
 		To:      to,
 		From:    from,
 		Subject: subject,
-		Text:    []byte("Read news, have a nice day!"),
+		Text:    []byte(text),
 		// HTML:    []byte("<h1>Fancy HTML is supported, too!</h1>"),
 		Headers: textproto.MIMEHeader{},
 	}
@@ -52,8 +57,7 @@ func DeliverDoc(filenames []string) {
 	}
 
 	log.Println("email send successfully!")
-	// memory limit
-	env.SendLog[util.Today()] = true
+	cache.GetInstance().Set(util.Today())
 	// delete tmp file
 	afterSend(filenames)
 }

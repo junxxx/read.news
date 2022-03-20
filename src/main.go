@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/jasonlvhit/gocron"
+	"github.com/junxxx/read.news/cache"
 	"github.com/junxxx/read.news/deliver"
-	"github.com/junxxx/read.news/env"
 	_ "github.com/junxxx/read.news/env"
 	"github.com/junxxx/read.news/parser"
 	"github.com/junxxx/read.news/util"
@@ -26,12 +26,13 @@ func jobDone(date string) bool {
 	if len(date) <= 0 {
 		date = util.Today()
 	}
-	_, ok := env.SendLog[date]
-	return ok
+	c := cache.GetInstance()
+	return c.Exist(date)
 }
 
 func task() {
 	log.Println("start job")
+	cache.GetInstance().Expire()
 	date := util.Today()
 	if jobDone(date) {
 		log.Println("date ", date, "send successfully")
