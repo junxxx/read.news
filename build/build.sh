@@ -1,2 +1,2 @@
 #!/bin/bash
-env GOOS=linux GOARCH=amd64 go build -o linux.read.news
+env GOOS=linux GOARCH=amd64 go build -o linux.read.news 
