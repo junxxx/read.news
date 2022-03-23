@@ -3,7 +3,7 @@ package cache
 import (
 	"fmt"
 
-	"github.com/junxxx/read.news/util"
+	"github.com/junxxx/read.news/internal/util"
 )
 
 type cacheValue bool

@@ -8,9 +8,9 @@ import (
 	"os"
 
 	"github.com/jordan-wright/email"
-	"github.com/junxxx/read.news/cache"
-	"github.com/junxxx/read.news/env"
-	"github.com/junxxx/read.news/util"
+	"github.com/junxxx/read.news/internal/cache"
+	"github.com/junxxx/read.news/internal/env"
+	"github.com/junxxx/read.news/internal/util"
 )
 
 var to = []string{"312866238@qq.com", "jinyanhuohuo@163.com"}

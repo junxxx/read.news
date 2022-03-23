@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/junxxx/read.news/util"
+	"github.com/junxxx/read.news/internal/util"
 )
 
 func TestInstance(t *testing.T) {

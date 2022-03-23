@@ -8,14 +8,13 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/junxxx/read.news/util"
+	"github.com/junxxx/read.news/internal/util"
 )
 
 const (
 	homeUrl      = "https://learningenglish.voanews.com"
 	userAgent    = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
 	articlesUrl  = homeUrl + "/z/3521"
-	url          = "https://learningenglish.voanews.com/a/ukraine-conflict-threatens-china-s-access-to-military-technology/6468847.html"
 	listClass    = "media-block-wrap"
 	titleClass   = "media-block__content"
 	dateClass    = "date date--mb date--size-3"
