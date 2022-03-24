@@ -17,4 +17,3 @@ every day
 - [x] build script
 - [ ] dynamic upgrade
 - [ ] dynamic parse date
-- [x] dockerfile 
