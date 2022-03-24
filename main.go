@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/junxxx/read.news/internal"
+	app "github.com/junxxx/read.news/internal"
 )
 
 func main() {
-	internal.Run()
+	app.Run()
 }

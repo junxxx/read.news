@@ -1,4 +1,4 @@
-package internal
+package app
 
 import (
 	"log"
@@ -24,7 +24,6 @@ func test() {
 }
 
 func task() {
-	cache.GetInstance().Expire()
 	log.Println("start job")
 	cache.GetInstance().Expire()
 	date := util.Today()

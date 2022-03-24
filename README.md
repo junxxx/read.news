@@ -14,6 +14,7 @@ every day
 - [x] retry when error occured or send email failed
 - [ ] error catch
 - [ ] log
-- [ ] build script
+- [x] build script
 - [ ] dynamic upgrade
 - [ ] dynamic parse date
+- [x] dockerfile 
