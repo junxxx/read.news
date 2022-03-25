@@ -15,5 +15,5 @@ every day
 - [ ] error catch
 - [ ] log
 - [x] build script
-- [ ] dynamic upgrade
+- [x] dynamic upgrade via docker workflow
 - [ ] dynamic parse date
