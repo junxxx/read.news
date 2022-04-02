@@ -11,6 +11,7 @@ import (
 	"github.com/junxxx/read.news/internal/util"
 )
 
+// Run is the entrypoint
 func Run() {
 	// UTC time
 	gocron.Every(1).Day().At("00:00").Do(task)

@@ -1,3 +1,4 @@
+// package parser, parser the html node to struct
 package parser
 
 import (
@@ -20,7 +21,7 @@ const (
 	dateClass    = "date date--mb date--size-3"
 	articleClass = "wsw"
 	articleId    = "articleItems"
-	dateFormt    = "January 2, 2006"
+	dateFormt    = "January 02, 2006"
 )
 
 var list []article
@@ -100,6 +101,7 @@ func (a *article) addContent() {
 	})
 }
 
+// Parse is the worker
 func Parse() []string {
 	filenames := make([]string, 0)
 	parseArticles()
