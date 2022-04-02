@@ -77,6 +77,8 @@ func parseArticles() {
 	doc.Find("#articleItems").Children().Each(func(i int, s *goquery.Selection) {
 		// For each item found, get the title
 		title, _ := s.Find("a").Attr("title")
+		// trim the return char
+		title = strings.Trim(title, "\n")
 		date := s.Find("span").Text()
 		href, _ := s.Find("a").Attr("href")
 		url := getArticleUrl(href)
