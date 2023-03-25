@@ -13,17 +13,13 @@ import (
 )
 
 const (
-	homeUrl      = "https://learningenglish.voanews.com"
-	userAgent    = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
-	articlesUrl  = homeUrl + "/z/3521"
-	listClass    = "media-block-wrap"
-	titleClass   = "media-block__content"
-	dateClass    = "date date--mb date--size-3"
-	articleClass = "wsw"
-	articleId    = "articleItems"
-	dateFormt    = "January 02, 2006"
+	homeUrl   = "https://learningenglish.voanews.com"
+	userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+	dateFormt = "January 02, 2006"
 )
 
+// news category link, for example https://learningenglish.voanews.com/z/955
+var category = [...]string{"/z/955", "/z/1579", "/z/986", "/z/3521"}
 var list []article
 
 type article struct {
@@ -35,6 +31,16 @@ type article struct {
 
 func getArticleUrl(href string) string {
 	return homeUrl + href
+}
+
+// get url of different category
+func getResources() []string {
+	var resources []string
+	for _, category := range category {
+		url := homeUrl + category
+		resources = append(resources, url)
+	}
+	return resources
 }
 
 func sameDate(d1, d2 string) bool {
@@ -70,7 +76,13 @@ func getUrlDoc(url string) (*goquery.Document, error) {
 }
 
 func parseArticles() {
-	doc, err := getUrlDoc(articlesUrl)
+	for _, resource := range getResources() {
+		parseArticle(resource)
+	}
+}
+
+func parseArticle(articleUrl string) {
+	doc, err := getUrlDoc(articleUrl)
 	if err != nil {
 		log.Fatal(err)
 	}
