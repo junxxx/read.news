@@ -13,7 +13,7 @@ import (
 	"github.com/junxxx/read.news/internal/util"
 )
 
-var to = []string{"312866238@qq.com", "jinyanhuohuo@163.com"}
+var to = []string{"312866238@qq.com", "jinyanhuohuo@163.com", "fhfuture@163.com"}
 
 const (
 	from     = "hprjunxxx@gmail.com"
