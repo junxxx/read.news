@@ -2,52 +2,77 @@ package app
 
 import (
 	"log"
-
-	"github.com/jasonlvhit/gocron"
-	"github.com/junxxx/read.news/internal/cache"
-	"github.com/junxxx/read.news/internal/deliver"
-	"github.com/junxxx/read.news/internal/env"
-	_ "github.com/junxxx/read.news/internal/env"
-	"github.com/junxxx/read.news/internal/parser"
-	"github.com/junxxx/read.news/internal/util"
+	"sync"
 )
 
-func runOnce() bool {
-	return len(*env.Once) > 0
+type Result struct {
+	Title   string
+	Content string
 }
 
-// Run is the entrypoint
+type Extractor interface {
+	Parse(url string) ([]*Result, error)
+}
+
+var extractors = make(map[string]Extractor)
+
+func Extract(extractor Extractor, url string, results chan<- *Result) {
+	contents, err := extractor.Parse(url)
+	if err != nil {
+		log.Println(err)
+	}
+	for _, result := range contents {
+		results <- result
+	}
+}
+
+func Register(site string, extractor Extractor) {
+	if _, exists := extractors[site]; exists {
+		log.Fatalln(site, "extractor already registered")
+	}
+	log.Println("Register", site, "extractor")
+	extractors[site] = extractor
+}
+
+// 1. get Extractor
+// 2. run Extractor.parse concurrently
+// 3. wait the result of goruntine
+// 4. dispatch the result to destination
 func Run() {
-	if runOnce() {
-		task()
+	sites, err := RetrieveSites()
+	if err != nil {
+		log.Print("RetrieveSites err", err)
 	}
-	// UTC time
-	gocron.Every(1).Day().At("00:00").Do(task)
-	gocron.Every(1).Day().At("00:15").Do(task)
-	gocron.Every(1).Day().At("00:30").Do(task)
-	<-gocron.Start()
+
+	results := make(chan *Result)
+
+	var waitGroup sync.WaitGroup
+
+	waitGroup.Add(len(sites))
+
+	for _, site := range sites {
+		// get extractor
+		extractor, exists := extractors[site.Name]
+		if !exists {
+			log.Fatalln(site, "extractor doesn't exists")
+		}
+
+		go func(extractor Extractor, url string) {
+			Extract(extractor, url, results)
+			waitGroup.Done()
+		}(extractor, site.URI)
+	}
+
+	go func() {
+		waitGroup.Wait()
+		close(results)
+	}()
+
+	Dispatch(results)
 }
 
-func test() {
-	log.Println("test")
-}
-
-func task() {
-	log.Println("start job")
-	cache.GetInstance().Expire()
-	date := util.Today()
-	if taskDone(date) {
-		log.Println("date ", date, "send successfully")
-		return
+func Dispatch(results chan *Result) {
+	for result := range results {
+		log.Printf(result.Title, result.Content)
 	}
-	deliver.DeliverDoc(parser.Parse())
-	log.Println("job done!")
-}
-
-func taskDone(date string) bool {
-	if len(date) <= 0 {
-		date = util.Today()
-	}
-	c := cache.GetInstance()
-	return c.Exist(date)
 }
