@@ -8,6 +8,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	app "github.com/junxxx/read.news/internal"
+	"github.com/junxxx/read.news/internal/result"
 )
 
 type metroExtractor struct{}
@@ -17,10 +18,10 @@ func init() {
 	app.Register("metro", extractor)
 }
 
-func (metro metroExtractor) Parse(url string) ([]*app.Result, error) {
-	var results []*app.Result
+func (metro metroExtractor) Parse(url string) ([]*result.Result, error) {
+	var results []*result.Result
 	var wg sync.WaitGroup
-	content := make(chan *app.Result)
+	content := make(chan *result.Result)
 
 	categories, err := category(url)
 	if err != nil {
@@ -86,8 +87,8 @@ func category(homepage string) ([]string, error) {
 	return ret, nil
 }
 
-func Content(url string, content chan<- *app.Result) {
-	var result app.Result
+func Content(url string, content chan<- *result.Result) {
+	var result result.Result
 
 	body, err := getHttpBody(url)
 	if err != nil {
@@ -99,7 +100,7 @@ func Content(url string, content chan<- *app.Result) {
 	body.Find("article div > p:not(:has(span))").Each(func(i int, s *goquery.Selection) {
 		c := strings.Trim(s.Text(), "")
 		if len(c) > 0 {
-			c = c + "\n\n"
+			c = c + "\n"
 			result.Content = result.Content + c
 		}
 	})

@@ -3,20 +3,20 @@ package app
 import (
 	"log"
 	"sync"
+
+	_ "github.com/junxxx/read.news/internal/env"
+
+	"github.com/junxxx/read.news/internal/deliver"
+	"github.com/junxxx/read.news/internal/result"
 )
 
-type Result struct {
-	Title   string
-	Content string
-}
-
 type Extractor interface {
-	Parse(url string) ([]*Result, error)
+	Parse(url string) ([]*result.Result, error)
 }
 
 var extractors = make(map[string]Extractor)
 
-func Extract(extractor Extractor, url string, results chan<- *Result) {
+func Extract(extractor Extractor, url string, results chan<- *result.Result) {
 	contents, err := extractor.Parse(url)
 	if err != nil {
 		log.Println(err)
@@ -44,7 +44,7 @@ func Run() {
 		log.Print("RetrieveSites err", err)
 	}
 
-	results := make(chan *Result)
+	results := make(chan *result.Result)
 
 	var waitGroup sync.WaitGroup
 
@@ -71,8 +71,10 @@ func Run() {
 	Dispatch(results)
 }
 
-func Dispatch(results chan *Result) {
+func Dispatch(results chan *result.Result) {
+	article := make([]*result.Result, 0)
 	for result := range results {
-		log.Printf(result.Title, result.Content)
+		article = append(article, result)
 	}
+	deliver.Dispatch(article)
 }

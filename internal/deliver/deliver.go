@@ -10,10 +10,12 @@ import (
 	"github.com/jordan-wright/email"
 	"github.com/junxxx/read.news/internal/cache"
 	"github.com/junxxx/read.news/internal/env"
+	"github.com/junxxx/read.news/internal/result"
 	"github.com/junxxx/read.news/internal/util"
 )
 
-var to = []string{"312866238@qq.com", "jinyanhuohuo@163.com", "fhfuture@163.com"}
+// var to = []string{"312866238@qq.com", "jinyanhuohuo@163.com", "fhfuture@163.com"}
+var to = []string{"312866238@qq.com"}
 
 const (
 	from     = "hprjunxxx@gmail.com"
@@ -62,9 +64,44 @@ func DeliverDoc(filenames []string) {
 	afterSend(filenames)
 }
 
+func fileName(r *result.Result) (string, error) {
+	folder := util.Today()
+	path := "./" + folder
+	err := os.MkdirAll(path, 0755)
+	if err != nil {
+		return "", err
+	}
+	filename := path + "/" + r.Title + ".txt"
+	return filename, nil
+}
+
+func writeFile(a *result.Result) string {
+	filename, err := fileName(a)
+	if err != nil {
+		log.Println(err)
+	}
+	err = os.WriteFile(filename, []byte(a.Content), 0644)
+	if err != nil {
+		log.Println(err)
+	}
+	return filename
+}
+
+func writeFiles(results []*result.Result) []string {
+	filenames := make([]string, 0)
+	for _, c := range results {
+		filenames = append(filenames, writeFile(c))
+	}
+	return filenames
+}
+
 // do something after send email
 func afterSend(filenames []string) {
 	for _, file := range filenames {
 		os.Remove(file)
 	}
+}
+
+func Dispatch(results []*result.Result) {
+	DeliverDoc(writeFiles(results))
 }

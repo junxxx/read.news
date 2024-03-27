@@ -2,6 +2,7 @@ package extractor
 
 import (
 	app "github.com/junxxx/read.news/internal"
+	"github.com/junxxx/read.news/internal/result"
 )
 
 type voaExtractor struct{}
@@ -11,9 +12,9 @@ func init() {
 	app.Register("voa", extractor)
 }
 
-func (voa voaExtractor) Parse(url string) ([]*app.Result, error) {
-	var results []*app.Result
-	results = append(results, &app.Result{
+func (voa voaExtractor) Parse(url string) ([]*result.Result, error) {
+	var results []*result.Result
+	results = append(results, &result.Result{
 		Title:   "voa test",
 		Content: "voa test content",
 	})
